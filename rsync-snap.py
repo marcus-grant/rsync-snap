@@ -11,25 +11,19 @@ __maintainer__ = "Marcus Grant"
 __email__ = "marcusfg@gmail.com"
 __status__ = "Alpha"
 
-def print_usage():
-    """Helper function that prints out the usage for the for this utility...
-    when the module is being used as a main script"""
-    # TODO: Add more options like:
-                # explicit options without configs:
-                    # source dir
-                    # dest dir
-                    # logs dir
-                    # remote identity file path
-                    # remote identity HostName
-                    # remote address
-                    # remote user
-                    # remote port
-    # TODO: Create proflie creation prompt to guide users.
-    print("rsync-snap usage:")
-    print("========================================" + 
-           "========================================")
-    print("rsync-snap BACKUP_PROFILE_NAME")
-    
-
-if __name__ = "__main__":
+if __name__ == "__main__":
     # handle args
+    import argparse
+
+    DESC = "A profile-based incremental snapshot backup script"
+    DESC += " that makes use of rsync's hard link functionality"
+    DESC += " to make snapshots of changes in the backup directory "
+    DESC += "with very little extra disk space."
+
+    aparser = argparse.ArgumentParser(description=DESC)
+
+    aparser.add_argument('backup-profile', metavar='BACKUP_PROFILE',
+                         help='profile associated to backup configs in rsync-snap.yml')
+
+    args = aparser.parse_args()
+    print(args)

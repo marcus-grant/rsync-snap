@@ -10,7 +10,12 @@ To-Do
 ### v0.1
 
 - [ ] Apply the massive comments of the previous attempt to bootstrap this idea in this script's bash precursor script to make understanding the project easier.
-- [ ] TDD - do it from the beginning, these are user and system files that are being handled.
+- [x] TDD - do it from the beginning, these are user and system files that are being handled.
+- [ ] Basic argument parsing using `argparse` to simply parse the backup proflie name to use.
+- [ ] Check that the backup profile name given is valid.
+- [ ] Check that the standard `rsync-snap.yml` has a file in it:
+    - For now just keep it in the same directory as the repo
+    - Finally learning to use the standard `unittest` module.
 - [ ] YAML config parsing.
     - [ ] `backup-name` **v0.1**
     - [ ] `source-dir` **v0.1**

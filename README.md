@@ -76,3 +76,42 @@ To-Do
     - [ ] You can run a `du -sh SOURCE_DIR` to get the total transfer time.
     - [ ] This might not be terribly easy or worth it since only deltas will be transferred.
     - [ ] Other suggestion is to parse the passed STDOUT to read rsync's progress programatically.
+
+
+Test Cases
+----------
+
+*Checkmarks denote tests being implemented, not that they pass*
+
+- [x] Executing `rsync_snap` without arguments prints error message & usage.
+- [x] Executing script `-h` shows usage.
+- [x] Executing script `--help` shows same usage.
+- [ ] Executing script with 1 string as argument using any characters but alphanumeric, or `-`, `_` results in an error detailing naming rules.
+- [ ] Executing script with valid characters in profile name argument that isn't defined in the `rsync_snap.yml` file results in error explaining error and prints usage.
+- [ ] Executing script with valid characters & an existing profile results in that profile nane being stored in global variable `backup_profile`
+- [ ] Report error if config file doesn't exist in path in `config_dir` & `config_filename`
+- [ ] Check that the standard `rsync-snap.yml` has a file in it:
+    - For now just keep it in the same directory as the repo
+    - Finally learning to use the standard `unittest` module.
+- [ ] YAML config parsing.
+    - [ ] `backup-name` **v0.1**
+    - [ ] `source-dir` **v0.1**
+    - [ ] `log-dir` **v0.2**
+    - [ ] `dest-address` **v0.3**
+    - [ ] `dest-port` **v0.3**
+    - [ ] `dest-id` **v0.3**
+    - [ ] `dest-ssh-name` **v0.3**
+    - [ ] `dest-dir` **v0.3**
+    - [ ] `systemd-log-level` **v0.4**
+    - [ ] `post-backup-command` **v0.5**
+- [ ] Validate that source path is correct and readable
+- [ ] Check if destination has an initial backup.
+- [ ] If not initial backup exists, format the command string to initialize the backup.
+- [ ] After transfer is complete, rename the folder to a timestamp instead.
+- [ ] After renaming the initial backup, create a symlink in the same directory that links to the latest backup, and name that link `latest`.
+- [ ] Check for initial backup, and if it exists, format the correct command string to create the linked backup.
+- [ ] Once executed completely, rename the folder to the current timestamp.
+- [ ] Force relink `latest` to the newly backed up snapshot with its new timestamp named directory.
+    - `ln -sf DEST_DIR/2018-02-26_T235901`
+- [ ] Usage contains `rsync_snap.yml` example.
+- [ ] Usage contains profile naming rules.

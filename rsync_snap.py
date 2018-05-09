@@ -13,6 +13,7 @@ __status__ = "Alpha"
 
 import argparse
 import os
+import sys
 
 # Easily accessible constants that contain different strings related to the CLI
 PROG_NAME = "rsync_snap.py"
@@ -20,6 +21,7 @@ PROG_DESC = "A rsync based backup utility that adds to rsync " \
     "profiles & incremental snaphosts through hardlinks."
 BACKUP_PROFILE_HELP = "backup profile to use for backup snapshot"
 BACKUP_PROFILE_META = "BACKUP_PROFILE"
+PROFILE_NAME_ERR = "Profile can only use alphanumeric characters or '-', '_'."
 
 # Script default constants
 CONFIG_FILENAME = "rsync_snap.yml"
@@ -37,24 +39,19 @@ def get_args():
                          help=BACKUP_PROFILE_HELP)
     return aparser.parse_args()
 
-def print_invalid_profile_name():
-    print("ERROR!")
-    msg = "Profile can only be use alphanumeric characters of '-', '_'."
-    print(msg)
-    print("Please give a profile named corectly, or change profile name")
-
 
 def is_valid_profile_name(profile_name):
     """Checks that a profile name only has valid chars"""
     legal_chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz'
     legal_chars += '0123456789-_'
     if any(c not in legal_chars for c in profile_name):
-        return False
-    return True
+        sys.exit(PROFILE_NAME_ERR)
+
+    return profile_name
 
 
 if __name__ == "__main__":
     ARGS = get_args()
-    PROFILE_NAME = False
-    if is_valid_profile_name(ARGS.backup_profile):
-        PROFILE_NAME = ARGS.backup_profile
+    PROFILE_NAME = is_valid_profile_name(ARGS.backup_profile)
+    print("Creating snapshot using profile: {}".format(PROFILE_NAME))
+    # TODO: Print out configurations associated with profile

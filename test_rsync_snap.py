@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """Tests for rsync_snap"""
 import unittest
 import subprocess
@@ -9,7 +10,9 @@ from rsync_snap import (
     PROG_NAME,
     BACKUP_PROFILE_META,
     BACKUP_PROFILE_HELP,
+    PROFILE_NAME_ERR,
     get_args,
+    is_valid_profile_name,
 )
 
 
@@ -53,23 +56,40 @@ rsync_snap.py: error: the following arguments are required: BACKUP_PROFILE"""
         help_arg_output = help_arg_output.stdout.decode('UTF-8')
         self.assertEqual(h_arg_output, help_arg_output)
 
-    def test_profilename_given_valid_arg(self): # pylint: disable=invalid-name
-        """Tests entering a valid profile name stores it correctly as
-        PROFILE_NAME"""
+    def test_is_valid_profile_name_valid(self):  # pylint: disable=invalid-name
+        """Test that is_valid_profile_name returns a profile name
+        when valid characters are given to it"""
         expected_profile = 'abc-123_XYZ'
         sys.argv[1:] = [expected_profile]
         args = get_args()
-        self.assertEqual(expected_profile, args.backup_profile)
+        self.assertEqual(expected_profile,
+                         is_valid_profile_name(args.backup_profile))
 
-    def test_invalid_profile_name_fails(self):
-        """Tests that entering any character but alphanumeric or '-_' causes:
-            - an exit code
-            - an error message mentioning invalid character use in profile
-            - a message that detailing valid characters to use"""
-        invalid_string = 'abc!./,)(#@'
-        h_arg_output = subprocess.run(['./rsync_snap.py', invalid_string],
-                                      stdout=subprocess.PIPE,
-                                      stderr=subprocess.PIPE)
-        h_arg_err = h_arg_output.stderr.decode('UTF-8')
-        h_arg_output = h_arg_output.stdout.decode('UTF-8')
-        self.assertEqual('', h_arg_output)
+    def test_is_valid_profile_name_invalid(self):
+        """Test that is_valid_profile_name exits with an error message
+        and the right error message when invalid characters are used"""
+        given_profiles = [
+            'a!', 'a@', 'a#', 'a$', 'a%', 'a^', 'a*',
+            'a+', 'a=', 'a:', 'a,', 'a.', 'a?',
+        ]
+        for profile in given_profiles:
+            with self.assertRaises(SystemExit) as cm:
+                is_valid_profile_name(profile)
+            self.assertEqual(cm.exception.code, PROFILE_NAME_ERR)
+
+    def test_invalid_profile_name_fail(self):
+        """Test that when script is given invalid profile,
+        it fails with the right message"""
+        given_profiles = [
+            'XYZ!', 'XYZ@', 'XYZ#', 'XYZ$', 'XYZ%', 'XYZ^', 'XYZ*',
+            'XYZ+', 'XYZ=', 'XYZ:', 'XYZ,', 'XYZ.', 'XYZ?',
+        ]
+        for profile in given_profiles:
+            invalid_output = subprocess.run(['./rsync_snap.py', profile],
+                                            stdout=subprocess.PIPE,
+                                            stderr=subprocess.PIPE)
+            invalid_err = invalid_output.stderr.decode('UTF-8')
+            invalid_output = invalid_output.stdout.decode('UTF-8')
+            # check that stdout is empty
+            self.assertEqual(invalid_output, '')
+            self.assertIn(PROFILE_NAME_ERR, invalid_err)

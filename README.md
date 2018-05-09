@@ -86,7 +86,7 @@ Test Cases
 - [x] Executing `rsync_snap` without arguments prints error message & usage.
 - [x] Executing script `-h` shows usage.
 - [x] Executing script `--help` shows same usage.
-- [ ] Executing script with 1 string as argument using any characters but alphanumeric, or `-`, `_` results in an error detailing naming rules.
+- [x] Executing script with 1 string as argument using any characters but alphanumeric, or `-`, `_` results in an error detailing naming rules.
 - [ ] Executing script with valid characters in profile name argument that isn't defined in the `rsync_snap.yml` file results in error explaining error and prints usage.
 - [ ] Executing script with valid characters & an existing profile results in that profile nane being stored in global variable `backup_profile`
 - [ ] Report error if config file doesn't exist in path in `config_dir` & `config_filename`

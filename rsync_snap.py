@@ -37,12 +37,24 @@ def get_args():
                          help=BACKUP_PROFILE_HELP)
     return aparser.parse_args()
 
-def validate_profile_name():
-    legal_chars = '^[]'
+def print_invalid_profile_name():
+    print("ERROR!")
+    msg = "Profile can only be use alphanumeric characters of '-', '_'."
+    print(msg)
+    print("Please give a profile named corectly, or change profile name")
 
+
+def is_valid_profile_name(profile_name):
+    """Checks that a profile name only has valid chars"""
+    legal_chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz'
+    legal_chars += '0123456789-_'
+    if any(c not in legal_chars for c in profile_name):
+        return False
+    return True
 
 
 if __name__ == "__main__":
     ARGS = get_args()
-    PROFILE_NAME = ARGS.backup_profile
-    print(PROFILE_NAME)
+    PROFILE_NAME = False
+    if is_valid_profile_name(ARGS.backup_profile):
+        PROFILE_NAME = ARGS.backup_profile

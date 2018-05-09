@@ -22,6 +22,8 @@ PROG_DESC = "A rsync based backup utility that adds to rsync " \
 BACKUP_PROFILE_HELP = "backup profile to use for backup snapshot"
 BACKUP_PROFILE_META = "BACKUP_PROFILE"
 PROFILE_NAME_ERR = "Profile can only use alphanumeric characters or '-', '_'."
+PROFILE_KEY = 'PROFILE'
+
 
 # Script default constants
 CONFIG_FILENAME = "rsync_snap.yml"
@@ -46,8 +48,18 @@ def is_valid_profile_name(profile_name):
     legal_chars += '0123456789-_'
     if any(c not in legal_chars for c in profile_name):
         sys.exit(PROFILE_NAME_ERR)
-
     return profile_name
+
+
+def parse_config(config_path):
+    #  lines = []
+    #  with open(config_path, 'r') as f:
+    #      for line in f:
+    #          lines.append(line)
+    #  profile_start = 0
+    #  for i in range(0, lines):
+    #      if i == profile_start:
+    pass
 
 
 if __name__ == "__main__":

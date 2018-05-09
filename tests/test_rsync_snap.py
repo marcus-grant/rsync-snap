@@ -13,6 +13,7 @@ from rsync_snap import (
     PROFILE_NAME_ERR,
     get_args,
     is_valid_profile_name,
+    parse_config,
 )
 
 
@@ -93,3 +94,10 @@ rsync_snap.py: error: the following arguments are required: BACKUP_PROFILE"""
             # check that stdout is empty
             self.assertEqual(invalid_output, '')
             self.assertIn(PROFILE_NAME_ERR, invalid_err)
+
+    def test_invalid_config(self):
+        """Test if dictionary from parsed from config file is empty"""
+        configs = {
+            'test1': {}
+        }
+        self.assertEqual(parse_config('./.test-config-fail.txt'), configs)

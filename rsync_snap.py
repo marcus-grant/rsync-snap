@@ -53,7 +53,8 @@ def is_valid_profile_name(profile_name):
 
 
 def parse_config(config_path):
-    config = configparser.ConfigParser()
+    parser = configparser.ConfigParser()
+
 
 
 if __name__ == "__main__":

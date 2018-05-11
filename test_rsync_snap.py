@@ -23,7 +23,7 @@ class TestArgParsing(unittest.TestCase):
     """usage: rsync_snap.py [-h] BACKUP_PROFILE
 rsync_snap.py: error: the following arguments are required: BACKUP_PROFILE"""
 
-    def no_arg(self):
+    def test_no_arg(self):
         """Test for printing the right response for running without args"""
         no_arg_output = subprocess.run('./rsync_snap.py',
                                        stdout=subprocess.PIPE,
@@ -34,7 +34,7 @@ rsync_snap.py: error: the following arguments are required: BACKUP_PROFILE"""
         self.assertIn('error', no_arg_output)
         self.assertIn(BACKUP_PROFILE_META, no_arg_output)
 
-    def h_for_help(self):
+    def test_h_for_help(self):
         """Test that entering '-h' brings up help output"""
         h_arg_output = subprocess.run('./rsync_snap.py -h'.split(),
                                       stdout=subprocess.PIPE,
@@ -45,7 +45,7 @@ rsync_snap.py: error: the following arguments are required: BACKUP_PROFILE"""
         for substring in expected_outputs:
             self.assertIn(substring, h_arg_output)
 
-    def that_h_arg_equals_help_arg(self):
+    def test_that_h_arg_equals_help_arg(self):
         """Test that '-h' as an arg does the same thing as '--help'"""
         h_arg_output = subprocess.run('./rsync_snap.py -h'.split(),
                                       stdout=subprocess.PIPE,
@@ -57,7 +57,7 @@ rsync_snap.py: error: the following arguments are required: BACKUP_PROFILE"""
         help_arg_output = help_arg_output.stdout.decode('UTF-8')
         self.assertEqual(h_arg_output, help_arg_output)
 
-    def is_valid_profile_name_valid(self):  # pylint: disable=invalid-name
+    def test_is_valid_profile_name_valid(self):  # pylint: disable=invalid-name
         """Test that is_valid_profile_name returns a profile name
         when valid characters are given to it"""
         expected_profile = 'abc-123_XYZ'
@@ -66,7 +66,7 @@ rsync_snap.py: error: the following arguments are required: BACKUP_PROFILE"""
         self.assertEqual(expected_profile,
                          is_valid_profile_name(args.backup_profile))
 
-    def is_valid_profile_name_invalid(self):
+    def test_is_valid_profile_name_invalid(self):
         """Test that is_valid_profile_name exits with an error message
         and the right error message when invalid characters are used"""
         given_profiles = [
@@ -78,7 +78,7 @@ rsync_snap.py: error: the following arguments are required: BACKUP_PROFILE"""
                 is_valid_profile_name(profile)
             self.assertEqual(exit_case.exception.code, PROFILE_NAME_ERR)
 
-    def invalid_profile_name_fail(self):
+    def test_invalid_profile_name_fail(self):
         """Test that when script is given invalid profile,
         it fails with the right message"""
         given_profiles = [
@@ -99,7 +99,8 @@ rsync_snap.py: error: the following arguments are required: BACKUP_PROFILE"""
 class TestConfigParsing(unittest.TestCase):
     """Testing related to parsing the config file for rsync_snap"""
 
-    def parse_config_bad_profile_key(self):
+    # TODO: have the test create a test file, then pass it to func
+    def test_parse_config_bad_profile_key(self):
         """Test if any key besides 'profile' in a config returns an empty
         dictionary"""
         profile_dict = {

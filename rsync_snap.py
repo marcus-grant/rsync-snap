@@ -12,6 +12,7 @@ __email__ = "marcusfg@gmail.com"
 __status__ = "Alpha"
 
 import argparse
+import configparser
 import os
 import sys
 
@@ -52,14 +53,7 @@ def is_valid_profile_name(profile_name):
 
 
 def parse_config(config_path):
-    #  lines = []
-    #  with open(config_path, 'r') as f:
-    #      for line in f:
-    #          lines.append(line)
-    #  profile_start = 0
-    #  for i in range(0, lines):
-    #      if i == profile_start:
-    pass
+    config = configparser.ConfigParser()
 
 
 if __name__ == "__main__":

@@ -1,4 +1,4 @@
-#!/home/marcus/code/sysadmin/rsync-snap/venv/bin/python3
+#!/home/marcus/code/sysadmin/rsync-snap/venv/bin/python
 
 # -*- coding: utf-8 -*-
 import re

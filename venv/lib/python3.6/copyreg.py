@@ -1,1 +1,1 @@
-/usr/lib64/python3.6/copyreg.py
+/usr/lib/python3.6/copyreg.py

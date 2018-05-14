@@ -53,6 +53,8 @@ def is_valid_profile_name(profile_name):
 
 
 def parse_config(config_path):
+    """Takes a config path, and returns both a dictionary of it
+    and an error in a tuple if there's an error"""
     parser = configparser.ConfigParser()
 
 

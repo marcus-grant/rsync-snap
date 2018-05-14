@@ -3,6 +3,9 @@
 import unittest
 import subprocess
 import sys
+import configparser
+import os
+
 #  from rsync_snap import (PROG_NAME, PROG_DESC, BACKUP_PROFILE_HELP,
 #  get_args)
 #  from rsync_snap import
@@ -98,6 +101,47 @@ rsync_snap.py: error: the following arguments are required: BACKUP_PROFILE"""
 
 class TestConfigParsing(unittest.TestCase):
     """Testing related to parsing the config file for rsync_snap"""
+    test_file_path = './tests/test.conf'
+
+    def test_bad_key_order(self):
+        """Should fail when profile key occurs after fields"""
+        if os.path.exists(self.test_file_path):
+            os.remove(self.test_file_path)
+
+        # Create a profile where the profile name occurs after the settings
+        config_bad_key_order = [
+            'src: /tmp',
+            'dst: /var/lib',
+            '[invalid_profile]',
+            '',
+            '[valid_profile]',
+            'src: /tmp',
+            'dst: /var/lib',
+            '',
+            'src: /tmp',
+            'dst: /var/lib',
+            '[invalid_profile2]',
+        ]
+
+        # Create the map that is expected from this bad file
+        expected_profile = {
+            'valid_profile': {
+                'src': '/tmp',
+                'dst': '/var/lib',
+            }
+        }
+
+        # Write the bad config to file
+        with open(self.test_file_path, 'w') as f:
+            for line in config_bad_key_order:
+                f.write('{}\n'.format(line))
+
+
+
+
+    pass
+
+
 
     # TODO: have the test create a test file, then pass it to func
     def test_parse_config_bad_profile_key(self):
